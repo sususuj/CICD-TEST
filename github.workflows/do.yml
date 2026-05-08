@@ -1,19 +1,34 @@
 name: Github Actions 실행하기
 
 on:
-  puah:
+  push:
     branches:
       - main
 
 jobs:
-  My-First_CICD_Job:
+  My-First-CICD-Job:
     runs-on: ubuntu-latest
 
     steps:
-       - name: simple-web
-         run: |
+      - name: file-check
+        run: |
           pwd
           ls -al
+      - name: file-create 
+        run: |
           echo "This is the first cicd step" >> a.txt
           ls -al
           cat a.txt
+
+  github-variables-check-job:
+    runs-on: linux-latest
+
+    steps:
+      - name: multiple-lines
+        run: |
+          echo "line 1"
+          echo "line 2"
+      - name: github-variables-check 
+        run: |
+          echo $GITHUB_SHA
+          echo $GITHUB_REPOSITORY
