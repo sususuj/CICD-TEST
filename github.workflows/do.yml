@@ -21,7 +21,7 @@ jobs:
           cat a.txt
 
   github-variables-check-job:
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: multiple-lines
@@ -33,12 +33,12 @@ jobs:
           echo $GITHUB_SHA
           echo $GITHUB_REPOSITORY
 
+  secret-variables-check-job:
+    runs-on: ubuntu-latest
 
-    secret-variables-check-job:
-      runs-on: ubuntu-latest
-
-      steps:
-       - name: secret-variables-check
-         run: |
-          echo ${{ secreate.EC2_USER }}
-          echo ${{ secreate.EC2_PEM_KEY }}
+    steps:
+      - name: secret-variables-check
+        run: |
+          echo ${{ secrets.EC2_USER }} >> ec2_user.txt
+          echo ${{ secrets.EC2_PEM_KEY }} >> ec2_pem_key.txt
+          cat ec2_pem_key.txt
