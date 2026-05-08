@@ -14,7 +14,7 @@ jobs:
         run: |
           pwd
           ls -al
-      - name: file-create 
+      - name: file-create
         run: |
           echo "This is the first cicd step" >> a.txt
           ls -al
@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "line 1"
           echo "line 2"
-      - name: github-variables-check 
+      - name: github-variables-check
         run: |
           echo $GITHUB_SHA
           echo $GITHUB_REPOSITORY
