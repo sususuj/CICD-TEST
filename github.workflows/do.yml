@@ -1,44 +1,30 @@
-name: Github Actions 실행하기
+name: Github Actions 으로 배포하기
 
 on:
   push:
     branches:
       - main
 
+env:
+  EC2_HOST: ${{ secrets.EC2_HOST }}
+  EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+  EC2_PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+  DEPLOY_PATH: /var/www/html
+
 jobs:
-  My-First-CICD-Job:
+  code-fetcht-Job:
     runs-on: ubuntu-latest
 
     steps:
-      - name: file-check
-        run: |
-          pwd
-          ls -al
-      - name: file-create
-        run: |
-          echo "This is the first cicd step" >> a.txt
-          ls -al
-          cat a.txt
+      - name: Checkout source
+        uses: actions/checkout@v3
 
-  github-variables-check-job:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: multiple-lines
-        run: |
-          echo "line 1"
-          echo "line 2"
-      - name: github-variables-check
-        run: |
-          echo $GITHUB_SHA
-          echo $GITHUB_REPOSITORY
-
-  secret-variables-check-job:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: secret-variables-check
-        run: |
-          echo ${{ secrets.EC2_USER }} >> ec2_user.txt
-          echo ${{ secrets.EC2_PEM_KEY }} >> ec2_pem_key.txt
-          cat ec2_pem_key.txt
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: EC2_HOST
+          username: EC2_USERNAME
+          key: EC2_PRIVATE_KEY
+          script: |
+           cd /home/ubuntu/CICD_TEST
+         
